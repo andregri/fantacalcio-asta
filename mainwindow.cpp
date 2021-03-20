@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include <QFileDialog>
 
+#include <algorithm>
+
 #include "parser.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -32,9 +34,18 @@ void MainWindow::on_btnLoadCsv_clicked()
     // Populate the table
     Player player;
     while (parser.parseLine(player)) {
+        // add team name to the list
+        std::string team = player.team();
+        if ( std::find(m_real_teams.begin(), m_real_teams.end(), team) == m_real_teams.end() ) {
+            m_real_teams.push_back(team);
+        }
+
+        // add row to the table
         bool hidden = !isRoleVisible(player.role());
         addRow(player, hidden);
     }
+
+    initTeamsComboBox();
 
     ui->tablePlayersValues->setSortingEnabled(true);
 }
@@ -142,6 +153,41 @@ void MainWindow::on_checkBox_forward_toggled(bool checked)
         QTableWidgetItem *item = table->item( row, int(TABLE_COLUMN::role) );
         if ( item->text().contains("A") ) {
             table->setRowHidden(row, !checked );
+        }
+    }
+}
+
+void MainWindow::initTeamsComboBox()
+{
+    ui->comboBox_teams->clear();
+
+    std::sort(m_real_teams.begin(), m_real_teams.end());
+
+    ui->comboBox_teams->addItem(QString("ALL"));
+    for (auto team : m_real_teams) {
+        ui->comboBox_teams->addItem(QString(team.c_str()));
+    }
+}
+
+void MainWindow::on_comboBox_teams_activated(const QString &selected)
+{
+    // Only show the players of the selected team
+    auto table = ui->tablePlayersValues;
+    for(int row = 0; row < table->rowCount(); ++row) {
+        QTableWidgetItem *item = table->item( row, int(TABLE_COLUMN::team) );
+
+        // TODO : global filter function!!!
+
+        // if the row contains the selected team: make it visible
+        if ( item->text().contains(selected) ) {
+            table->setRowHidden(row, false);
+        }
+        // if the row does not contain the selected team:
+        else if (!item->text().contains(selected)) {
+
+        }
+        if ( !table->isRowHidden(row) ) {
+            table->setRowHidden(row, true);
         }
     }
 }

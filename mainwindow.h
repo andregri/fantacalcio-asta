@@ -28,6 +28,8 @@ private slots:
 
     void on_checkBox_forward_toggled(bool checked);
 
+    void on_comboBox_teams_activated(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
 
@@ -36,6 +38,10 @@ private:
     void initTableHeaders();
     void addRow(const Player& player, bool hidden);
     bool isRoleVisible(Player::Role);
+
+    // Teams combo box
+    std::vector<std::string> m_real_teams; // list of team names in the real championship
+    void initTeamsComboBox();
 };
 
 #endif // MAINWINDOW_H
