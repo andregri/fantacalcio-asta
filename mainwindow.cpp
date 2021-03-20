@@ -32,8 +32,11 @@ void MainWindow::on_btnLoadCsv_clicked()
     // Populate the table
     Player player;
     while (parser.parseLine(player)) {
-        addRow(player);
+        bool hidden = !isRoleVisible(player.role());
+        addRow(player, hidden);
     }
+
+    ui->tablePlayersValues->setSortingEnabled(true);
 }
 
 void MainWindow::initTableHeaders()
@@ -54,7 +57,7 @@ void MainWindow::initTableHeaders()
     p_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
-void MainWindow::addRow(const Player& player)
+void MainWindow::addRow(const Player& player, bool hidden)
 {
     auto p_table = ui->tablePlayersValues;
 
@@ -79,4 +82,66 @@ void MainWindow::addRow(const Player& player)
     p_table->setItem(row, int(TABLE_COLUMN::actual_value), new QTableWidgetItem(actualValue));
     p_table->setItem(row, int(TABLE_COLUMN::initial_value), new QTableWidgetItem(initialValue));
     p_table->setItem(row, int(TABLE_COLUMN::diff_value), new QTableWidgetItem(diffValue));
+
+    p_table->setRowHidden(row, hidden);
+}
+
+bool MainWindow::isRoleVisible(Player::Role role)
+{
+    switch (role) {
+    case Player::Role::goalkeeper:
+        return ui->checkBox_goalkeeper->isChecked();
+    case Player::Role::defender:
+        return ui->checkBox_defender->isChecked();
+    case Player::Role::midfield:
+        return ui->checkBox_midfield->isChecked();
+    case Player::Role::forward:
+        return ui->checkBox_forward->isChecked();
+    default:
+        return false;
+    }
+}
+
+void MainWindow::on_checkBox_goalkeeper_toggled(bool checked)
+{
+    auto table = ui->tablePlayersValues;
+    for(int row = 0; row < table->rowCount(); ++row) {
+        QTableWidgetItem *item = table->item( row, int(TABLE_COLUMN::role) );
+        if ( item->text().contains("P") ) {
+            table->setRowHidden(row, !checked );
+        }
+    }
+}
+
+void MainWindow::on_checkBox_defender_toggled(bool checked)
+{
+    auto table = ui->tablePlayersValues;
+    for(int row = 0; row < table->rowCount(); ++row) {
+        QTableWidgetItem *item = table->item( row, int(TABLE_COLUMN::role) );
+        if ( item->text().contains("D") ) {
+            table->setRowHidden(row, !checked );
+        }
+    }
+}
+
+void MainWindow::on_checkBox_midfield_toggled(bool checked)
+{
+    auto table = ui->tablePlayersValues;
+    for(int row = 0; row < table->rowCount(); ++row) {
+        QTableWidgetItem *item = table->item( row, int(TABLE_COLUMN::role) );
+        if ( item->text().contains("C") ) {
+            table->setRowHidden(row, !checked );
+        }
+    }
+}
+
+void MainWindow::on_checkBox_forward_toggled(bool checked)
+{
+    auto table = ui->tablePlayersValues;
+    for(int row = 0; row < table->rowCount(); ++row) {
+        QTableWidgetItem *item = table->item( row, int(TABLE_COLUMN::role) );
+        if ( item->text().contains("A") ) {
+            table->setRowHidden(row, !checked );
+        }
+    }
 }

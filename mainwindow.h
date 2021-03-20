@@ -20,13 +20,22 @@ public:
 private slots:
     void on_btnLoadCsv_clicked();
 
+    void on_checkBox_goalkeeper_toggled(bool checked);
+
+    void on_checkBox_defender_toggled(bool checked);
+
+    void on_checkBox_midfield_toggled(bool checked);
+
+    void on_checkBox_forward_toggled(bool checked);
+
 private:
     Ui::MainWindow *ui;
 
     // Players quotations table
     enum class TABLE_COLUMN { id, role, name, team, actual_value, initial_value, diff_value };
     void initTableHeaders();
-    void addRow(const Player& player);
+    void addRow(const Player& player, bool hidden);
+    bool isRoleVisible(Player::Role);
 };
 
 #endif // MAINWINDOW_H
