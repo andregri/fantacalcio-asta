@@ -14,13 +14,13 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>9</x>
-      <y>9</y>
+      <x>10</x>
+      <y>10</y>
       <width>841</width>
-      <height>261</height>
+      <height>521</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -181,6 +181,9 @@
         </widget>
        </item>
       </layout>
+     </item>
+     <item>
+      <widget class="QTableWidget" name="tableTeams"/>
      </item>
     </layout>
    </widget>

@@ -2,6 +2,8 @@
 #define PLAYER_H
 
 #include <string>
+#include <memory>
+
 
 namespace Football
 {
@@ -16,6 +18,7 @@ public:
     Player(std::string name, std::string team, double actual_value,
            double initial_value, double diff_value, int id, Role role);
 
+    // Getters and Setters
     void name(const std::string& name) { m_name = name; }
     std::string name() const { return m_name; }
 
@@ -37,6 +40,7 @@ public:
     void role(Role r) { m_role = r; }
     Role role() const { return m_role; }
 
+    // Utilities
     static Role strToRole(const std::string&);
     static std::string roleToStr(Role);
 

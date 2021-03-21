@@ -13,9 +13,16 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    // Teams table
+    initTeams();
+    initTeamsTableHeaders();
+    initTeamsTable();
+
+    // Load button
     ui->btnLoadCsv->setToolTip("Select the file with the players quotations");
 
-    initTableHeaders();
+    // Quotations table
+    initPlayersTableHeaders();
 }
 
 MainWindow::~MainWindow()
@@ -41,8 +48,12 @@ void MainWindow::on_btnLoadCsv_clicked()
             m_real_teams.push_back(team);
         }
 
+        // add player to the vector
+        player_sptr player_p( new Football::Player(player) );
+        m_players.push_back( player_p );
+
         // add row to the table
-        addRow(player, false);
+        addPlayerRow(player, false);
 
         // set row hidden or visible based on filters
         int row = ui->tablePlayersValues->rowCount() - 1;
@@ -56,7 +67,7 @@ void MainWindow::on_btnLoadCsv_clicked()
     ui->tablePlayersValues->setSortingEnabled(true);
 }
 
-void MainWindow::initTableHeaders()
+void MainWindow::initPlayersTableHeaders()
 {
     auto p_table = ui->tablePlayersValues;
 
@@ -74,7 +85,7 @@ void MainWindow::initTableHeaders()
     p_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
-void MainWindow::addRow(const Football::Player& player, bool hidden)
+void MainWindow::addPlayerRow(const Football::Player& player, bool hidden)
 {
     auto p_table = ui->tablePlayersValues;
 
@@ -92,13 +103,13 @@ void MainWindow::addRow(const Football::Player& player, bool hidden)
     double initialValue = player.initialValue();
     double diffValue = player.diffValue();
 
-    p_table->setItem(row, int(TABLE_COLUMN::id), new QTableNumberItem(id));
-    p_table->setItem(row, int(TABLE_COLUMN::role), new QTableWidgetItem(role));
-    p_table->setItem(row, int(TABLE_COLUMN::name), new QTableWidgetItem(name));
-    p_table->setItem(row, int(TABLE_COLUMN::team), new QTableWidgetItem(team));
-    p_table->setItem(row, int(TABLE_COLUMN::actual_value), new QTableNumberItem(actualValue));
-    p_table->setItem(row, int(TABLE_COLUMN::initial_value), new QTableNumberItem(initialValue));
-    p_table->setItem(row, int(TABLE_COLUMN::diff_value), new QTableNumberItem(diffValue));
+    p_table->setItem(row, int(TABLE_PLAYER_COLUMN::id), new QTableNumberItem(id));
+    p_table->setItem(row, int(TABLE_PLAYER_COLUMN::role), new QTableWidgetItem(role));
+    p_table->setItem(row, int(TABLE_PLAYER_COLUMN::name), new QTableWidgetItem(name));
+    p_table->setItem(row, int(TABLE_PLAYER_COLUMN::team), new QTableWidgetItem(team));
+    p_table->setItem(row, int(TABLE_PLAYER_COLUMN::actual_value), new QTableNumberItem(actualValue));
+    p_table->setItem(row, int(TABLE_PLAYER_COLUMN::initial_value), new QTableNumberItem(initialValue));
+    p_table->setItem(row, int(TABLE_PLAYER_COLUMN::diff_value), new QTableNumberItem(diffValue));
 
     p_table->setRowHidden(row, hidden);
 }
@@ -231,20 +242,20 @@ bool MainWindow::filterByName(const std::string& name)
 
 bool MainWindow::filter(int row)
 {
-    QString role_str = ui->tablePlayersValues->item( row, int(TABLE_COLUMN::role) )->text();
+    QString role_str = ui->tablePlayersValues->item( row, int(TABLE_PLAYER_COLUMN::role) )->text();
     Football::Player::Role role = Football::Player::strToRole(role_str.toStdString());
     bool hidden = filterByRole(role);
     if  (hidden) {
         return hidden;
     }
 
-    QString team = ui->tablePlayersValues->item( row, int(TABLE_COLUMN::team) )->text();
+    QString team = ui->tablePlayersValues->item( row, int(TABLE_PLAYER_COLUMN::team) )->text();
     hidden = filterByTeam(team.toStdString());
     if (hidden) {
         return hidden;
     }
 
-    QString name = ui->tablePlayersValues->item( row, int(TABLE_COLUMN::name) )->text();
+    QString name = ui->tablePlayersValues->item( row, int(TABLE_PLAYER_COLUMN::name) )->text();
     hidden = filterByName(name.toStdString());
     return hidden;
 }
@@ -252,4 +263,77 @@ bool MainWindow::filter(int row)
 void MainWindow::on_lineEdit_playerName_textEdited(const QString &arg1)
 {
     ui->lineEdit_playerName->setText(arg1.toUpper());
+}
+
+
+/*
+ *  Teams Table
+ */
+
+void MainWindow::initTeamsTableHeaders()
+{
+    auto p_table = ui->tableTeams;
+
+    // Set columns number
+    p_table->setColumnCount(7);
+
+    // set horizontal header
+    QStringList tableHorizontalHeader {"Team", "Money", "Max Offer", "# P", "# D", "# C", "# A"};
+    p_table->setHorizontalHeaderLabels(tableHorizontalHeader);
+}
+
+void MainWindow::initTeamsTable()
+{
+    auto p_table = ui->tableTeams;
+
+    for (auto team_p : m_teams) {
+        addTeamRow(*team_p);
+    }
+
+    // Disable editing
+    p_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    //p_table->resizeColumnsToContents();
+    p_table->setSortingEnabled(true);
+}
+
+void MainWindow::addTeamRow(const Fantasy::Team& team)
+{
+    auto p_table = ui->tableTeams;
+
+    // append an empty row
+    p_table->insertRow(p_table->rowCount());
+
+    int row = p_table->rowCount() - 1;
+
+    // Populate the row
+    QString name = QString(team.name().c_str());
+    int money = team.money();
+    int max_offer = team.maxOffer();
+    int num_gk = team.numByRole(Football::Player::Role::goalkeeper);
+    int num_def = team.numByRole(Football::Player::Role::defender);
+    int num_mid = team.numByRole(Football::Player::Role::midfield);
+    int num_for = team.numByRole(Football::Player::Role::forward);
+
+    p_table->setItem(row, int(TABLE_TEAM_COLUMN::name), new QTableWidgetItem(name));
+    p_table->setItem(row, int(TABLE_TEAM_COLUMN::money), new QTableNumberItem(money));
+    p_table->setItem(row, int(TABLE_TEAM_COLUMN::max_offer), new QTableNumberItem(max_offer));
+    p_table->setItem(row, int(TABLE_TEAM_COLUMN::num_gk), new QTableNumberItem(num_gk));
+    p_table->setItem(row, int(TABLE_TEAM_COLUMN::num_def), new QTableNumberItem(num_def));
+    p_table->setItem(row, int(TABLE_TEAM_COLUMN::num_mid), new QTableNumberItem(num_mid));
+    p_table->setItem(row, int(TABLE_TEAM_COLUMN::num_for), new QTableNumberItem(num_for));
+}
+
+
+/*
+ *  Teams
+ */
+
+void MainWindow::initTeams()
+{
+    for (int i = 0; i < 10; ++i) {
+        std::string team_name = "team " + std::to_string(i);
+        team_sptr team_p( new Fantasy::Team(team_name, 500) );
+        m_teams.push_back(team_p);
+    }
 }
