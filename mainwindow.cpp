@@ -33,7 +33,7 @@ void MainWindow::on_btnLoadCsv_clicked()
     Parser parser(filename.toStdString());
 
     // Populate the table
-    Player player;
+    Football::Player player;
     while (parser.parseLine(player)) {
         // add team name to the list
         std::string team = player.team();
@@ -74,7 +74,7 @@ void MainWindow::initTableHeaders()
     p_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
-void MainWindow::addRow(const Player& player, bool hidden)
+void MainWindow::addRow(const Football::Player& player, bool hidden)
 {
     auto p_table = ui->tablePlayersValues;
 
@@ -85,7 +85,7 @@ void MainWindow::addRow(const Player& player, bool hidden)
 
     // Populate the row
     int id = player.id();
-    QString role = QString(Player::roleToStr(player.role()).c_str());
+    QString role = QString(Football::Player::roleToStr(player.role()).c_str());
     QString name = QString(player.name().c_str());
     QString team = QString(player.team().c_str());
     double actualValue = player.actualValue();
@@ -180,16 +180,16 @@ void MainWindow::on_lineEdit_playerName_returnPressed()
     }
 }
 
-bool MainWindow::filterByRole(Player::Role role)
+bool MainWindow::filterByRole(Football::Player::Role role)
 {
     switch (role) {
-    case Player::Role::goalkeeper:
+    case Football::Player::Role::goalkeeper:
         return !ui->checkBox_goalkeeper->isChecked();
-    case Player::Role::defender:
+    case Football::Player::Role::defender:
         return !ui->checkBox_defender->isChecked();
-    case Player::Role::midfield:
+    case Football::Player::Role::midfield:
         return !ui->checkBox_midfield->isChecked();
-    case Player::Role::forward:
+    case Football::Player::Role::forward:
         return !ui->checkBox_forward->isChecked();
     default:
         return true;
@@ -232,7 +232,7 @@ bool MainWindow::filterByName(const std::string& name)
 bool MainWindow::filter(int row)
 {
     QString role_str = ui->tablePlayersValues->item( row, int(TABLE_COLUMN::role) )->text();
-    Player::Role role = Player::strToRole(role_str.toStdString());
+    Football::Player::Role role = Football::Player::strToRole(role_str.toStdString());
     bool hidden = filterByRole(role);
     if  (hidden) {
         return hidden;

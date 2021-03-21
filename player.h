@@ -3,6 +3,9 @@
 
 #include <string>
 
+namespace Football
+{
+
 class Player
 {
 public:
@@ -46,5 +49,7 @@ private:
     int m_id;
     Role m_role;
 };
+
+}
 
 #endif // PLAYER_H

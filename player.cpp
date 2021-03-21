@@ -1,5 +1,8 @@
 #include "player.h"
 
+namespace Football
+{
+
 Player::Player() :
     Player("", "", 0.0f, 0.0f, 0.0f, -1, Role::unknown)
 {
@@ -51,4 +54,6 @@ std::string Player::roleToStr(Role role)
     default:
         return "";
     }
+}
+
 }

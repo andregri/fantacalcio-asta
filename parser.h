@@ -10,7 +10,7 @@ class Parser
 public:
     Parser(const std::string&);
 
-    bool parseLine(Player&);
+    bool parseLine(Football::Player&);
 
 private:
     Parser();

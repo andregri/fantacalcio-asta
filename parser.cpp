@@ -12,7 +12,7 @@ Parser::Parser(const std::string& filename) :
     }
 }
 
-bool Parser::parseLine(Player& player)
+bool Parser::parseLine(Football::Player& player)
 {
     if (!m_file.is_open()) {
         return false;
@@ -31,7 +31,7 @@ bool Parser::parseLine(Player& player)
     if (getline(m_file, s, m_delimiter).eof()) {
         return false;
     }
-    player.role(Player::strToRole(s));
+    player.role(Football::Player::strToRole(s));
 
     // Name
     if (getline(m_file, s, m_delimiter).eof()) {
