@@ -27,12 +27,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     player.cpp \
-    parser.cpp
+    parser.cpp \
+    qtablenumberitem.cpp
 
 HEADERS += \
         mainwindow.h \
     player.h \
-    parser.h
+    parser.h \
+    qtablenumberitem.h
 
 FORMS += \
         mainwindow.ui

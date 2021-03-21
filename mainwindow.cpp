@@ -5,6 +5,7 @@
 #include <algorithm>
 
 #include "parser.h"
+#include "qtablenumberitem.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -83,21 +84,21 @@ void MainWindow::addRow(const Player& player, bool hidden)
     int row = p_table->rowCount() - 1;
 
     // Populate the row
-    QString id = QString::number(player.id());
+    int id = player.id();
     QString role = QString(Player::roleToStr(player.role()).c_str());
     QString name = QString(player.name().c_str());
     QString team = QString(player.team().c_str());
-    QString actualValue = QString::number(player.actualValue());
-    QString initialValue = QString::number(player.initialValue());
-    QString diffValue = QString::number(player.diffValue());
+    double actualValue = player.actualValue();
+    double initialValue = player.initialValue();
+    double diffValue = player.diffValue();
 
-    p_table->setItem(row, int(TABLE_COLUMN::id), new QTableWidgetItem(id));
+    p_table->setItem(row, int(TABLE_COLUMN::id), new QTableNumberItem(id));
     p_table->setItem(row, int(TABLE_COLUMN::role), new QTableWidgetItem(role));
     p_table->setItem(row, int(TABLE_COLUMN::name), new QTableWidgetItem(name));
     p_table->setItem(row, int(TABLE_COLUMN::team), new QTableWidgetItem(team));
-    p_table->setItem(row, int(TABLE_COLUMN::actual_value), new QTableWidgetItem(actualValue));
-    p_table->setItem(row, int(TABLE_COLUMN::initial_value), new QTableWidgetItem(initialValue));
-    p_table->setItem(row, int(TABLE_COLUMN::diff_value), new QTableWidgetItem(diffValue));
+    p_table->setItem(row, int(TABLE_COLUMN::actual_value), new QTableNumberItem(actualValue));
+    p_table->setItem(row, int(TABLE_COLUMN::initial_value), new QTableNumberItem(initialValue));
+    p_table->setItem(row, int(TABLE_COLUMN::diff_value), new QTableNumberItem(diffValue));
 
     p_table->setRowHidden(row, hidden);
 }
