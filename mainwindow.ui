@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>857</width>
-    <height>461</height>
+    <width>859</width>
+    <height>552</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,35 +17,134 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>260</y>
-      <width>144</width>
-      <height>50</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_3">
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Name:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="lineEdit_playerName"/>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
       <x>9</x>
       <y>9</y>
-      <width>839</width>
-      <height>224</height>
+      <width>841</width>
+      <height>261</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Role:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBox_goalkeeper">
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>P</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBox_defender">
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>D</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBox_midfield">
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>C</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBox_forward">
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>A</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Squadra:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboBox_teams"/>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Name:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_playerName"/>
+       </item>
+      </layout>
+     </item>
      <item>
       <widget class="QTableWidget" name="tablePlayersValues">
        <property name="cursor" stdset="0">
@@ -82,111 +181,6 @@
         </widget>
        </item>
       </layout>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>100</x>
-      <y>260</y>
-      <width>38</width>
-      <height>135</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Role:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="checkBox_goalkeeper">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>P</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="checkBox_defender">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>D</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="checkBox_midfield">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>C</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="checkBox_forward">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>A</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>180</x>
-      <y>330</y>
-      <width>141</width>
-      <height>50</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_4">
-     <item>
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Squadra:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="comboBox_teams"/>
      </item>
     </layout>
    </widget>

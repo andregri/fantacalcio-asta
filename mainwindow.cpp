@@ -51,6 +51,7 @@ void MainWindow::on_btnLoadCsv_clicked()
 
     initTeamsComboBox();
 
+    ui->tablePlayersValues->resizeColumnsToContents();
     ui->tablePlayersValues->setSortingEnabled(true);
 }
 
