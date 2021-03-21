@@ -30,6 +30,10 @@ private slots:
 
     void on_comboBox_teams_activated(const QString &arg1);
 
+    void on_lineEdit_playerName_returnPressed();
+
+    void on_lineEdit_playerName_textEdited(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
 

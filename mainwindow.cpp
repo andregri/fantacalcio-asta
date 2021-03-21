@@ -169,6 +169,15 @@ void MainWindow::on_comboBox_teams_activated(const QString &selected)
     }
 }
 
+void MainWindow::on_lineEdit_playerName_returnPressed()
+{
+    auto table = ui->tablePlayersValues;
+    for(int row = 0; row < table->rowCount(); ++row) {
+        bool hidden = filter(row);
+        table->setRowHidden(row, hidden);
+    }
+}
+
 bool MainWindow::filterByRole(Player::Role role)
 {
     switch (role) {
@@ -236,4 +245,9 @@ bool MainWindow::filter(int row)
     QString name = ui->tablePlayersValues->item( row, int(TABLE_COLUMN::name) )->text();
     hidden = filterByName(name.toStdString());
     return hidden;
+}
+
+void MainWindow::on_lineEdit_playerName_textEdited(const QString &arg1)
+{
+    ui->lineEdit_playerName->setText(arg1.toUpper());
 }
