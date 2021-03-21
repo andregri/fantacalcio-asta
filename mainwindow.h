@@ -37,11 +37,16 @@ private:
     enum class TABLE_COLUMN { id, role, name, team, actual_value, initial_value, diff_value };
     void initTableHeaders();
     void addRow(const Player& player, bool hidden);
-    bool isRoleVisible(Player::Role);
 
     // Teams combo box
     std::vector<std::string> m_real_teams; // list of team names in the real championship
     void initTeamsComboBox();
+
+    // Filters: return true if row SHOULD be hidden
+    bool filterByRole(Player::Role);
+    bool filterByTeam(const std::string&);
+    bool filterByName(const std::string&);
+    bool filter(int row);
 };
 
 #endif // MAINWINDOW_H

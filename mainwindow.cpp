@@ -41,8 +41,12 @@ void MainWindow::on_btnLoadCsv_clicked()
         }
 
         // add row to the table
-        bool hidden = !isRoleVisible(player.role());
-        addRow(player, hidden);
+        addRow(player, false);
+
+        // set row hidden or visible based on filters
+        int row = ui->tablePlayersValues->rowCount() - 1;
+        bool hidden = filter(row);
+        ui->tablePlayersValues->setRowHidden(row, hidden);
     }
 
     initTeamsComboBox();
@@ -97,63 +101,47 @@ void MainWindow::addRow(const Player& player, bool hidden)
     p_table->setRowHidden(row, hidden);
 }
 
-bool MainWindow::isRoleVisible(Player::Role role)
-{
-    switch (role) {
-    case Player::Role::goalkeeper:
-        return ui->checkBox_goalkeeper->isChecked();
-    case Player::Role::defender:
-        return ui->checkBox_defender->isChecked();
-    case Player::Role::midfield:
-        return ui->checkBox_midfield->isChecked();
-    case Player::Role::forward:
-        return ui->checkBox_forward->isChecked();
-    default:
-        return false;
-    }
-}
-
 void MainWindow::on_checkBox_goalkeeper_toggled(bool checked)
 {
+    Q_UNUSED(checked);
+
     auto table = ui->tablePlayersValues;
     for(int row = 0; row < table->rowCount(); ++row) {
-        QTableWidgetItem *item = table->item( row, int(TABLE_COLUMN::role) );
-        if ( item->text().contains("P") ) {
-            table->setRowHidden(row, !checked );
-        }
+        bool hidden = filter(row);
+        table->setRowHidden(row, hidden);
     }
 }
 
 void MainWindow::on_checkBox_defender_toggled(bool checked)
 {
+    Q_UNUSED(checked);
+
     auto table = ui->tablePlayersValues;
     for(int row = 0; row < table->rowCount(); ++row) {
-        QTableWidgetItem *item = table->item( row, int(TABLE_COLUMN::role) );
-        if ( item->text().contains("D") ) {
-            table->setRowHidden(row, !checked );
-        }
+        bool hidden = filter(row);
+        table->setRowHidden(row, hidden);
     }
 }
 
 void MainWindow::on_checkBox_midfield_toggled(bool checked)
 {
+    Q_UNUSED(checked);
+
     auto table = ui->tablePlayersValues;
     for(int row = 0; row < table->rowCount(); ++row) {
-        QTableWidgetItem *item = table->item( row, int(TABLE_COLUMN::role) );
-        if ( item->text().contains("C") ) {
-            table->setRowHidden(row, !checked );
-        }
+        bool hidden = filter(row);
+        table->setRowHidden(row, hidden);
     }
 }
 
 void MainWindow::on_checkBox_forward_toggled(bool checked)
 {
+    Q_UNUSED(checked);
+
     auto table = ui->tablePlayersValues;
     for(int row = 0; row < table->rowCount(); ++row) {
-        QTableWidgetItem *item = table->item( row, int(TABLE_COLUMN::role) );
-        if ( item->text().contains("A") ) {
-            table->setRowHidden(row, !checked );
-        }
+        bool hidden = filter(row);
+        table->setRowHidden(row, hidden);
     }
 }
 
@@ -171,23 +159,81 @@ void MainWindow::initTeamsComboBox()
 
 void MainWindow::on_comboBox_teams_activated(const QString &selected)
 {
+    Q_UNUSED(selected);
+
     // Only show the players of the selected team
     auto table = ui->tablePlayersValues;
     for(int row = 0; row < table->rowCount(); ++row) {
-        QTableWidgetItem *item = table->item( row, int(TABLE_COLUMN::team) );
-
-        // TODO : global filter function!!!
-
-        // if the row contains the selected team: make it visible
-        if ( item->text().contains(selected) ) {
-            table->setRowHidden(row, false);
-        }
-        // if the row does not contain the selected team:
-        else if (!item->text().contains(selected)) {
-
-        }
-        if ( !table->isRowHidden(row) ) {
-            table->setRowHidden(row, true);
-        }
+        bool hidden = filter(row);
+        table->setRowHidden(row, hidden);
     }
+}
+
+bool MainWindow::filterByRole(Player::Role role)
+{
+    switch (role) {
+    case Player::Role::goalkeeper:
+        return !ui->checkBox_goalkeeper->isChecked();
+    case Player::Role::defender:
+        return !ui->checkBox_defender->isChecked();
+    case Player::Role::midfield:
+        return !ui->checkBox_midfield->isChecked();
+    case Player::Role::forward:
+        return !ui->checkBox_forward->isChecked();
+    default:
+        return true;
+    }
+}
+
+bool MainWindow::filterByTeam(const std::string& team)
+{
+    QString comboBoxTeam = ui->comboBox_teams->currentText();
+    QString playerTeam = QString(team.c_str());
+
+    if (comboBoxTeam == "ALL" || comboBoxTeam == "") {
+        return false;
+    }
+
+    if (comboBoxTeam == playerTeam) {
+        return false;
+    }
+
+    return true;
+}
+
+bool MainWindow::filterByName(const std::string& name)
+{
+    QString filterName = ui->lineEdit_playerName->text();
+    filterName = filterName.trimmed();
+    QString playerName = QString(name.c_str());
+
+    if (filterName == "") {
+        return false;
+    }
+
+    if (playerName.contains(filterName)) {
+        return false;
+    }
+
+    return true;
+}
+
+bool MainWindow::filter(int row)
+{
+    QString role_str = ui->tablePlayersValues->item( row, int(TABLE_COLUMN::role) )->text();
+    Player::Role role = Player::strToRole(role_str.toStdString());
+    bool hidden = filterByRole(role);
+    if  (hidden) {
+        return hidden;
+    }
+
+    QString team = ui->tablePlayersValues->item( row, int(TABLE_COLUMN::team) )->text();
+    hidden = filterByTeam(team.toStdString());
+    if (hidden) {
+        return hidden;
+    }
+
+    QString name = ui->tablePlayersValues->item( row, int(TABLE_COLUMN::name) )->text();
+    hidden = filterByName(name.toStdString());
+    return hidden;
 }
