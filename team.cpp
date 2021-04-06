@@ -11,17 +11,18 @@ Team::Team(const std::string& name, int money) :
 
 }
 
-void Team::buyPlayer(const std::shared_ptr<Football::Player>& player, int cost)
+void Team::buyPlayer(std::shared_ptr<Football::Player> player, int cost)
 {
     if (m_money - cost < 0) {
         throw m_name + " cannot afford to buy " + player->name();
     }
+
     auto new_player = std::weak_ptr<Football::Player>(player);
     m_players.push_back(new_player);
     m_money -= cost;
 }
 
-void Team::sellPlayer(const std::shared_ptr<Football::Player>& player, int value)
+void Team::sellPlayer(std::shared_ptr<Football::Player> player, int value)
 {
     auto removed_it = std::remove_if(m_players.begin(), m_players.end(), [player](const player_wptr& weak_ptr){
         auto shared_ptr = weak_ptr.lock();

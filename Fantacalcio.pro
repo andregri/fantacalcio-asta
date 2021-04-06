@@ -29,14 +29,17 @@ SOURCES += \
     player.cpp \
     parser.cpp \
     qtablenumberitem.cpp \
-    team.cpp
+    team.cpp \
+    buyplayerdialog.cpp
 
 HEADERS += \
         mainwindow.h \
     player.h \
     parser.h \
     qtablenumberitem.h \
-    team.h
+    team.h \
+    buyplayerdialog.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    buyplayerdialog.ui

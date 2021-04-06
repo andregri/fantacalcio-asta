@@ -40,6 +40,9 @@ public:
     void role(Role r) { m_role = r; }
     Role role() const { return m_role; }
 
+    void available(bool value) { m_available = true; }
+    bool available() const { return m_available; }
+
     // Utilities
     static Role strToRole(const std::string&);
     static std::string roleToStr(Role);
@@ -52,6 +55,7 @@ private:
     double m_diffValue;
     int m_id;
     Role m_role;
+    bool m_available;
 };
 
 }

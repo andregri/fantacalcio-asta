@@ -16,7 +16,8 @@ Player::Player(std::string name, std::string team, double actual_value, double i
     m_initialValue(initial_value),
     m_diffValue(diff_value),
     m_id(id),
-    m_role(role)
+    m_role(role),
+    m_available(true)
 {
 
 }

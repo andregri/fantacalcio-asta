@@ -40,6 +40,8 @@ private slots:
 
     void on_lineEdit_playerName_textEdited(const QString &arg1);
 
+    void on_tablePlayersValues_itemDoubleClicked(QTableWidgetItem *item);
+
 private:
     Ui::MainWindow *ui;
 
@@ -48,12 +50,13 @@ private:
 
     typedef std::shared_ptr<Fantasy::Team> team_sptr;
     std::vector<team_sptr> m_teams;
-    void initTeams();
+    void initFantasyTeams();
 
     // Players quotations table
     enum class TABLE_PLAYER_COLUMN { id, role, name, team, actual_value, initial_value, diff_value };
     void initPlayersTableHeaders();
     void addPlayerRow(const Football::Player& player, bool hidden);
+    void updatePlayersTableBgColorRow(int row);
 
     // Teams combo box
     std::vector<std::string> m_real_teams; // list of team names in the real championship
@@ -69,6 +72,7 @@ private:
     // Teams table
     void initTeamsTableHeaders();
     void initTeamsTable();
+    void updateTeamsTableRow(int row, std::shared_ptr<Fantasy::Team> team);
     void addTeamRow(const Fantasy::Team&);
 };
 

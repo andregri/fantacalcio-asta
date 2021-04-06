@@ -14,11 +14,11 @@ class Team
 public:
     Team(const std::string&, int);
 
-    void buyPlayer(const std::shared_ptr<Football::Player>&, int);
-    void sellPlayer(const std::shared_ptr<Football::Player>&, int);
+    void buyPlayer(std::shared_ptr<Football::Player>, int);
+    void sellPlayer(std::shared_ptr<Football::Player>, int);
     int maxOffer() const; // return the max legal offer during the auction
 
-    // getters5
+    // getters
     std::string name() const { return m_name; }
     //const std::vector<Football::Player>& players() const { return *m_players; }
     int money() const { return m_money; }

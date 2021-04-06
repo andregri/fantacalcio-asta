@@ -1,11 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QFileDialog>
+#include <QMessageBox>
 
 #include <algorithm>
 
 #include "parser.h"
 #include "qtablenumberitem.h"
+#include "buyplayerdialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,8 +15,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    setWindowTitle("Fantacalcio Manager");
+
     // Teams table
-    initTeams();
+    initFantasyTeams();
     initTeamsTableHeaders();
     initTeamsTable();
 
@@ -112,6 +116,19 @@ void MainWindow::addPlayerRow(const Football::Player& player, bool hidden)
     p_table->setItem(row, int(TABLE_PLAYER_COLUMN::diff_value), new QTableNumberItem(diffValue));
 
     p_table->setRowHidden(row, hidden);
+}
+
+void MainWindow::updatePlayersTableBgColorRow(int row)
+{
+    auto p_table = ui->tablePlayersValues;
+
+    p_table->item(row, int(TABLE_PLAYER_COLUMN::id))->setBackgroundColor(Qt::red);
+    p_table->item(row, int(TABLE_PLAYER_COLUMN::role))->setBackgroundColor(Qt::red);
+    p_table->item(row, int(TABLE_PLAYER_COLUMN::name))->setBackgroundColor(Qt::red);
+    p_table->item(row, int(TABLE_PLAYER_COLUMN::team))->setBackgroundColor(Qt::red);
+    p_table->item(row, int(TABLE_PLAYER_COLUMN::actual_value))->setBackgroundColor(Qt::red);
+    p_table->item(row, int(TABLE_PLAYER_COLUMN::initial_value))->setBackgroundColor(Qt::red);
+    p_table->item(row, int(TABLE_PLAYER_COLUMN::diff_value))->setBackgroundColor(Qt::red);
 }
 
 void MainWindow::on_checkBox_goalkeeper_toggled(bool checked)
@@ -324,16 +341,83 @@ void MainWindow::addTeamRow(const Fantasy::Team& team)
     p_table->setItem(row, int(TABLE_TEAM_COLUMN::num_for), new QTableNumberItem(num_for));
 }
 
+void MainWindow::updateTeamsTableRow(int row, std::shared_ptr<Fantasy::Team> team)
+{
+    auto p_table = ui->tableTeams;
+
+    p_table->setSortingEnabled(false);
+
+    // Populate the row
+    QString name = QString(team->name().c_str());
+    int money = team->money();
+    int max_offer = team->maxOffer();
+    int num_gk = team->numByRole(Football::Player::Role::goalkeeper);
+    int num_def = team->numByRole(Football::Player::Role::defender);
+    int num_mid = team->numByRole(Football::Player::Role::midfield);
+    int num_for = team->numByRole(Football::Player::Role::forward);
+
+    p_table->setItem(row, int(TABLE_TEAM_COLUMN::name), new QTableWidgetItem(name));
+    p_table->setItem(row, int(TABLE_TEAM_COLUMN::money), new QTableNumberItem(money));
+    p_table->setItem(row, int(TABLE_TEAM_COLUMN::max_offer), new QTableNumberItem(max_offer));
+    p_table->setItem(row, int(TABLE_TEAM_COLUMN::num_gk), new QTableNumberItem(num_gk));
+    p_table->setItem(row, int(TABLE_TEAM_COLUMN::num_def), new QTableNumberItem(num_def));
+    p_table->setItem(row, int(TABLE_TEAM_COLUMN::num_mid), new QTableNumberItem(num_mid));
+    p_table->setItem(row, int(TABLE_TEAM_COLUMN::num_for), new QTableNumberItem(num_for));
+
+    p_table->setSortingEnabled(true);
+}
+
 
 /*
  *  Teams
  */
 
-void MainWindow::initTeams()
+void MainWindow::initFantasyTeams()
 {
     for (int i = 0; i < 10; ++i) {
         std::string team_name = "team " + std::to_string(i);
         team_sptr team_p( new Fantasy::Team(team_name, 500) );
         m_teams.push_back(team_p);
+    }
+}
+
+void MainWindow::on_tablePlayersValues_itemDoubleClicked(QTableWidgetItem *item)
+{
+    // Open dialog to select team and cost
+    BuyPlayerDialog bp_dialog(m_teams, this);
+    auto res = bp_dialog.exec();
+    if (res == QDialog::Rejected) {
+        return;
+    }
+
+    QString teamName = bp_dialog.team();
+    int cost = bp_dialog.cost();
+
+    // Find fantasy team by name
+    auto found_team = std::find_if(m_teams.begin(), m_teams.end(), [teamName](const auto& team){
+        return QString( team->name().c_str() ) == teamName;
+    });
+
+    // Find player
+    int playerRow = ui->tablePlayersValues->row(item);
+    QString playerName = ui->tablePlayersValues->item( playerRow, int(TABLE_PLAYER_COLUMN::name) )->text();
+    auto found_player = std::find_if(m_players.begin(), m_players.end(), [playerName](const auto& player){
+        return QString( player->name().c_str() ) == playerName;
+    });
+
+    // Buy player
+    (*found_team)->buyPlayer((*found_player), cost);
+
+    // Update Players table
+    updatePlayersTableBgColorRow(playerRow);
+    item->setSelected(false);
+
+    // Update Teams table
+    for(int row = 0; row < ui->tableTeams->rowCount(); ++row) {
+        QString team_qs = ui->tableTeams->item(row, int(TABLE_TEAM_COLUMN::name))->text();
+        if ( team_qs == QString((*found_team)->name().c_str()) ) {
+            updateTeamsTableRow(row, (*found_team));
+            break;
+        }
     }
 }
