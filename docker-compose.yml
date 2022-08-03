@@ -1,0 +1,15 @@
+version: '3.1'
+
+services:
+  adminer:
+    build: .
+    command: python -u db.py   
+
+  postgres:
+    image: postgres:14
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: fantacalcio
