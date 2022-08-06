@@ -19,3 +19,21 @@ def add_player(db_conn, fantasy_team_id, player_id, cost):
         """)
 
         db_conn.commit()
+
+def find_player_by_name(db_conn, player_name):
+    with db_conn.cursor() as cursor:
+        cursor.execute(f"""
+            SELECT id, name FROM player
+            WHERE lower(name) LIKE '%' || '{player_name}' || '%';
+        """)
+        player_rows = cursor.fetchall()
+
+        if len(player_rows) == 0:
+            raise ValueError(f"Unable to find a player from '{player_name}'")
+
+        elif len(player_rows) == 1:
+            logging.info(f"Found one player from '{player_name}': {str(player_rows[0])}")
+            return player_rows[0]
+
+        elif len(player_rows) > 1:
+            raise ValueError(f"Found many players from '{player_name}': {','.join(str(row) for row in player_rows)}")

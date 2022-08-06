@@ -16,7 +16,7 @@ NUM_ROSTER = sum((num for num in NUM_PER_ROLE.values()))
 def max_offer(db_conn, fantasy_team_id):
     with db_conn.cursor() as cursor:
         cursor.execute(f"""
-            SELECT SUM(transfer.cost), COUNT(transfer.cost)
+            SELECT COALESCE(SUM(transfer.cost), 0), COALESCE(COUNT(transfer.cost), 0)
             FROM roster
             INNER JOIN transfer
             ON roster.transfer_id = transfer.id
@@ -41,7 +41,7 @@ def max_offer(db_conn, fantasy_team_id):
 def max_estimated_offer(db_conn, fantasy_team_id, role, budget):
     with db_conn.cursor() as cursor:
         cursor.execute(f"""
-            SELECT SUM(transfer.cost), COUNT(transfer.cost)
+            SELECT COALESCE(SUM(transfer.cost), 0), COALESCE(COUNT(transfer.cost), 0)
             FROM roster
             INNER JOIN transfer ON roster.transfer_id = transfer.id
             WHERE roster.fantasy_team_id = {fantasy_team_id}
@@ -57,7 +57,7 @@ def max_estimated_offer(db_conn, fantasy_team_id, role, budget):
         logging.debug(f"Total Cost of team {fantasy_team_id} per {role} role is {player_tot_cost}")
         logging.debug(f"Number of missing player of team {fantasy_team_id} per {role} role is {num_missing_players}")
 
-        max_offer_estimate = budget - player_tot_cost - (8 - num_missing_players + 1)
+        max_offer_estimate = budget - player_tot_cost - num_missing_players + 1
 
         logging.debug(f"Estimated max offer of team {fantasy_team_id} is {max_offer_estimate}")
 
