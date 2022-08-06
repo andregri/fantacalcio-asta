@@ -20,8 +20,7 @@ CREATE TABLE IF NOT EXISTS player (
     name TEXT NOT NULL,
     team TEXT NOT NULL,
     value INTEGER NOT NULL,
-    fantasy_value INTEGER NOT NULL,
-    fantasy_team_id INTEGER REFERENCES team(id)
+    fantasy_value INTEGER NOT NULL
 );
 """
 
