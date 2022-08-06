@@ -5,11 +5,9 @@ import datetime
 
 create_table = """
 CREATE TABLE IF NOT EXISTS roster (
-    created TIMESTAMP PRIMARY KEY,
-    role TEXT, 
-    name TEXT,
-    team TEXT,
-    cost INTEGER
+    player_id INTEGER REFERENCES player(id),
+    fantasy_team_id INTEGER REFERENCES team(id),
+    transfer_id INTEGER REFERENCES transfer(id)
 );
 """
 
@@ -46,16 +44,18 @@ class Rosters:
 
 
 if __name__ == "__main__":
-    rosters = Rosters('rose.xlsx')
-    #pprint.pprint(rosters.list(0, 0))
-    with open('schema.sql', 'w') as f:
+    #rosters = Rosters('files/rose.xlsx')
+    #with open('schema.sql', 'w') as f:
+    #    f.write(create_table)
+    #    
+    #    roster1 = rosters.list(0,0)
+    #    for player in roster1:
+    #        created = player['Created']
+    #        role = player['Role']
+    #        name = player['Name'].replace('\'', '')
+    #        team = player['Team']
+    #        cost = player['Cost']
+    #        f.write(f"INSERT INTO roster (created, role, name, team, cost) VALUES ('{created}', '{role}', '{name}', '{team}', {cost});\n")
+
+    with open("roster_schema.sql", "w") as f:
         f.write(create_table)
-        
-        roster1 = rosters.list(0,0)
-        for player in roster1:
-            created = player['Created']
-            role = player['Role']
-            name = player['Name'].replace('\'', '')
-            team = player['Team']
-            cost = player['Cost']
-            f.write(f"INSERT INTO roster (created, role, name, team, cost) VALUES ('{created}', '{role}', '{name}', '{team}', {cost});\n")
