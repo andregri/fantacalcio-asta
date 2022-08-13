@@ -18,8 +18,8 @@ def populate():
 
     # Add 3 defenders defenders
     utils.add_player(db_conn, 1, 4292, 30)
-    utils.add_player(db_conn, 1, 5513, 20)
-    utils.add_player(db_conn, 1, 2788, 15)
+    utils.add_player(db_conn, 2, 5513, 20)
+    utils.add_player(db_conn, 3, 2788, 15)
 
     db_conn.close()
 
