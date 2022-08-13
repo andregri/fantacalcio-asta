@@ -1967,8 +1967,8 @@
     "list": []
   },
   "time": {
-    "from": "2022-08-05T10:00:00.000Z",
-    "to": "2022-08-07T09:59:59.998Z"
+    "from": "now-6h",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
