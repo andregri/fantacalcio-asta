@@ -103,12 +103,13 @@ def estimate_offer(player, **kwargs):
                 max_offer = estimate.max_offer(db_conn, fantasy_team_id)
                 estimate_max_offer = estimate.max_estimated_offer(db_conn, fantasy_team_id, player_role, budget=80)
 
-                offers_dict[fantasy_team_name] = dict(
-                    to_buy=num_player_to_buy, max=max_offer, est=estimate_max_offer
-                )
+                if estimate_max_offer > 0:
+                    offers_dict[fantasy_team_name] = dict(
+                        to_buy=num_player_to_buy, max=max_offer, est=estimate_max_offer
+                    )
 
         # sort offers by the estimated offer
-        sorted_offers_dict = {k: v for k,v in sorted(offers_dict.items(), key=lambda item: item[1]['est'])}
+        sorted_offers_dict = {k: v for k,v in sorted(offers_dict.items(), key=lambda item: item[1]['est'], reverse=True)}
         table_data = [[k, v['to_buy'], v['max'], v['est']] for k,v in sorted_offers_dict.items()]
 
         # print data in a table
