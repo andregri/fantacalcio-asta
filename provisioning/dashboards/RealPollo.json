@@ -367,6 +367,97 @@
         ],
         "title": "Budget expense (%)",
         "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "MZ6sP9kVz"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "displayMode": "auto",
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        },
+        "id": 6,
+        "options": {
+          "footer": {
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": true,
+              "displayName": "value"
+            }
+          ]
+        },
+        "pluginVersion": "9.0.7",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "MZ6sP9kVz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n  player.name,\n  player.team,\n  player.value\nFROM player\nLEFT OUTER JOIN transfer ON player.id = transfer.player_id\nWHERE player.role LIKE 'D'\nAND transfer.dest_fantasy_team_id IS NULL\nORDER BY player.value\n",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Defenders Free",
+        "type": "table"
       }
     ],
     "refresh": "5s",
@@ -384,6 +475,6 @@
     "timezone": "",
     "title": "Real Pollo",
     "uid": "fUg4J8ZVz",
-    "version": 9,
+    "version": 10,
     "weekStart": ""
   }
