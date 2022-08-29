@@ -1,0 +1,389 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 3,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "MZ6sP9kVz"
+        },
+        "description": "Real Pollo roster",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "displayMode": "auto",
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "role"
+              },
+              "properties": [
+                {
+                  "id": "mappings",
+                  "value": [
+                    {
+                      "options": {
+                        "A": {
+                          "color": "red",
+                          "index": 3
+                        },
+                        "C": {
+                          "color": "blue",
+                          "index": 2
+                        },
+                        "D": {
+                          "color": "green",
+                          "index": 1
+                        },
+                        "P": {
+                          "color": "orange",
+                          "index": 0
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ]
+                },
+                {
+                  "id": "custom.width",
+                  "value": 51
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "role"
+              },
+              "properties": [
+                {
+                  "id": "custom.displayMode",
+                  "value": "color-background-solid"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "name"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 114
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "team"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 96
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "cost"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 48
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 15,
+          "w": 6,
+          "x": 0,
+          "y": 0
+        },
+        "id": 2,
+        "options": {
+          "footer": {
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": true,
+              "displayName": "role"
+            }
+          ]
+        },
+        "pluginVersion": "9.0.7",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "MZ6sP9kVz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n  player.role, player.name, player.team, transfer.cost\nFROM roster, transfer, team, player\nWHERE roster.transfer_id = transfer.id\nAND roster.fantasy_team_id = team.id\nAND roster.player_id = player.id\nAND team.name LIKE 'Real Pollo'\n",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Roster",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "MZ6sP9kVz"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "displayMode": "auto",
+              "inspect": false
+            },
+            "mappings": [],
+            "max": 50,
+            "min": 0,
+            "thresholds": {
+              "mode": "percentage",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 50
+                },
+                {
+                  "color": "red",
+                  "value": 100
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Budget (%)"
+              },
+              "properties": [
+                {
+                  "id": "custom.displayMode",
+                  "value": "gradient-gauge"
+                },
+                {
+                  "id": "custom.width",
+                  "value": 205
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Role"
+              },
+              "properties": [
+                {
+                  "id": "mappings",
+                  "value": [
+                    {
+                      "options": {
+                        "A": {
+                          "color": "light-red",
+                          "index": 3,
+                          "text": "Attacco"
+                        },
+                        "C": {
+                          "color": "light-blue",
+                          "index": 2,
+                          "text": "Centrocampo"
+                        },
+                        "D": {
+                          "color": "light-green",
+                          "index": 0,
+                          "text": "Difesa"
+                        },
+                        "P": {
+                          "color": "light-orange",
+                          "index": 1,
+                          "text": "Porta"
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ]
+                },
+                {
+                  "id": "custom.displayMode",
+                  "value": "color-background-solid"
+                },
+                {
+                  "id": "custom.width",
+                  "value": 107
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 6,
+          "y": 0
+        },
+        "id": 4,
+        "options": {
+          "footer": {
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": true,
+              "displayName": "Role"
+            }
+          ]
+        },
+        "pluginVersion": "9.0.7",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "MZ6sP9kVz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n  player.role AS \"Role\", SUM(transfer.cost)/500::float * 100 AS \"Budget (%)\"\nFROM roster, transfer, team, player\nWHERE roster.transfer_id = transfer.id\nAND roster.fantasy_team_id = team.id\nAND roster.player_id = player.id\nAND team.name LIKE 'Real Pollo'\nGROUP BY player.role\n",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Budget expense (%)",
+        "type": "table"
+      }
+    ],
+    "refresh": "5s",
+    "schemaVersion": 36,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Real Pollo",
+    "uid": "fUg4J8ZVz",
+    "version": 9,
+    "weekStart": ""
+  }
