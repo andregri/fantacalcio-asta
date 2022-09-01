@@ -24,7 +24,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -160,7 +159,7 @@
         ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 7,
         "w": 4,
         "x": 0,
         "y": 0
@@ -182,7 +181,7 @@
           }
         ]
       },
-      "pluginVersion": "9.0.2",
+      "pluginVersion": "9.0.7",
       "targets": [
         {
           "datasource": {
@@ -353,7 +352,7 @@
         ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 7,
         "w": 4,
         "x": 4,
         "y": 0
@@ -375,7 +374,7 @@
           }
         ]
       },
-      "pluginVersion": "9.0.2",
+      "pluginVersion": "9.0.7",
       "targets": [
         {
           "datasource": {
@@ -546,7 +545,7 @@
         ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 7,
         "w": 4,
         "x": 8,
         "y": 0
@@ -568,7 +567,7 @@
           }
         ]
       },
-      "pluginVersion": "9.0.2",
+      "pluginVersion": "9.0.7",
       "targets": [
         {
           "datasource": {
@@ -739,7 +738,7 @@
         ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 7,
         "w": 4,
         "x": 12,
         "y": 0
@@ -761,7 +760,7 @@
           }
         ]
       },
-      "pluginVersion": "9.0.2",
+      "pluginVersion": "9.0.7",
       "targets": [
         {
           "datasource": {
@@ -932,7 +931,7 @@
         ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 7,
         "w": 4,
         "x": 16,
         "y": 0
@@ -954,7 +953,7 @@
           }
         ]
       },
-      "pluginVersion": "9.0.2",
+      "pluginVersion": "9.0.7",
       "targets": [
         {
           "datasource": {
@@ -1125,10 +1124,10 @@
         ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 8,
         "w": 4,
         "x": 0,
-        "y": 11
+        "y": 7
       },
       "id": 7,
       "options": {
@@ -1147,7 +1146,7 @@
           }
         ]
       },
-      "pluginVersion": "9.0.2",
+      "pluginVersion": "9.0.7",
       "targets": [
         {
           "datasource": {
@@ -1318,10 +1317,10 @@
         ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 8,
         "w": 4,
         "x": 4,
-        "y": 11
+        "y": 7
       },
       "id": 3,
       "options": {
@@ -1340,7 +1339,7 @@
           }
         ]
       },
-      "pluginVersion": "9.0.2",
+      "pluginVersion": "9.0.7",
       "targets": [
         {
           "datasource": {
@@ -1511,10 +1510,10 @@
         ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 8,
         "w": 4,
         "x": 8,
-        "y": 11
+        "y": 7
       },
       "id": 9,
       "options": {
@@ -1533,7 +1532,7 @@
           }
         ]
       },
-      "pluginVersion": "9.0.2",
+      "pluginVersion": "9.0.7",
       "targets": [
         {
           "datasource": {
@@ -1704,10 +1703,10 @@
         ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 8,
         "w": 4,
         "x": 12,
-        "y": 11
+        "y": 7
       },
       "id": 10,
       "options": {
@@ -1726,7 +1725,7 @@
           }
         ]
       },
-      "pluginVersion": "9.0.2",
+      "pluginVersion": "9.0.7",
       "targets": [
         {
           "datasource": {
@@ -1897,10 +1896,10 @@
         ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 8,
         "w": 4,
         "x": 16,
-        "y": 11
+        "y": 7
       },
       "id": 11,
       "options": {
@@ -1919,7 +1918,7 @@
           }
         ]
       },
-      "pluginVersion": "9.0.2",
+      "pluginVersion": "9.0.7",
       "targets": [
         {
           "datasource": {
@@ -1974,6 +1973,6 @@
   "timezone": "browser",
   "title": "Rosters",
   "uid": "FX0O89kVk",
-  "version": 10,
+  "version": 1,
   "weekStart": ""
 }
