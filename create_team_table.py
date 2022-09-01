@@ -16,4 +16,4 @@ if __name__ == "__main__":
         f.write("INSERT INTO team (name, coach) VALUES ('Godopolisportiva Antonio Ricci', 'AleC');\n")
         f.write("INSERT INTO team (name, coach) VALUES ('MedusaTeam WFC', 'FedeF');\n")
         f.write("INSERT INTO team (name, coach) VALUES ('Reggisenal', 'DanieleP');\n")
-        f.write("INSERT INTO team (name, coach) VALUES ('Rolling Stoned', 'LorenzoP');\n")
+        f.write("INSERT INTO team (name, coach) VALUES ('Team Barco', 'LorenzoP');\n")
