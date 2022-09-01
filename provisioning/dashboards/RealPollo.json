@@ -538,7 +538,11 @@
               },
               {
                 "id": "custom.width",
-                "value": 137
+                "value": 153
+              },
+              {
+                "id": "decimals",
+                "value": 0
               }
             ]
           },
@@ -596,7 +600,19 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 86
+                "value": 68
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "sum"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
               }
             ]
           }
@@ -842,6 +858,6 @@
   "timezone": "",
   "title": "Real Pollo",
   "uid": "fUg4J8ZVz",
-  "version": 14,
+  "version": 1,
   "weekStart": ""
 }
