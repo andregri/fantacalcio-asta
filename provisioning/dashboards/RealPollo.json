@@ -211,6 +211,288 @@
         "type": "postgres",
         "uid": "MZ6sP9kVz"
       },
+      "description": "Budget 90",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "toBuy"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 43
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "tot_expense"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 40
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "bought"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 42
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 131
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "tot_expense"
+          }
+        ]
+      },
+      "pluginVersion": "9.0.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "MZ6sP9kVz"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT name, 8 - COALESCE(num_players, 0) AS \"toBuy\", COALESCE(expense.bought,0) AS \"bought\", 90 - COALESCE(expense.tot,0) - (8 - COALESCE(num_players, 0)) + 1 AS tot_expense\n            FROM team\n            LEFT JOIN (\n                SELECT roster.fantasy_team_id AS id, COUNT(roster.fantasy_team_id) AS num_players\n                FROM roster\n                INNER JOIN player ON roster.player_id = player.id\n                WHERE player.role = 'D'\n                GROUP BY roster.fantasy_team_id) AS count\n\t\t\tON team.id = count.id\n\t\t\tLEFT JOIN (\n\t\t\t\tSELECT roster.fantasy_team_id, COALESCE(SUM(transfer.cost), 0) AS tot, COALESCE(COUNT(transfer.cost), 0) AS bought\n\t\t\t\tFROM roster\n\t\t\t\tINNER JOIN transfer ON roster.transfer_id = transfer.id\n\t\t\t\tWHERE roster.player_id IN (\n\t\t\t\t\tSELECT id FROM player\n\t\t\t\t\tWHERE role = 'D')\n\t\t\t\tGROUP BY roster.fantasy_team_id\n\t\t\t) AS expense\n\t\t\tON team.id = expense.fantasy_team_id\n\t\t\tORDER BY tot_expense DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Max estimated offer for DIFESA",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "MZ6sP9kVz"
+      },
+      "description": "Budget 125",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "toBuy"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 43
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "tot_expense"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 40
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "bought"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 42
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 131
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 7,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "tot_expense"
+          }
+        ]
+      },
+      "pluginVersion": "9.0.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "MZ6sP9kVz"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT name, 8 - COALESCE(num_players, 0) AS \"toBuy\", COALESCE(expense.bought,0) AS \"bought\", 80 - COALESCE(expense.tot,0) - (8 - COALESCE(num_players, 0)) + 1 AS tot_expense\n            FROM team\n            LEFT JOIN (\n                SELECT roster.fantasy_team_id AS id, COUNT(roster.fantasy_team_id) AS num_players\n                FROM roster\n                INNER JOIN player ON roster.player_id = player.id\n                WHERE player.role = 'C'\n                GROUP BY roster.fantasy_team_id) AS count\n\t\t\tON team.id = count.id\n\t\t\tLEFT JOIN (\n\t\t\t\tSELECT roster.fantasy_team_id, COALESCE(SUM(transfer.cost), 0) AS tot, COALESCE(COUNT(transfer.cost), 0) AS bought\n\t\t\t\tFROM roster\n\t\t\t\tINNER JOIN transfer ON roster.transfer_id = transfer.id\n\t\t\t\tWHERE roster.player_id IN (\n\t\t\t\t\tSELECT id FROM player\n\t\t\t\t\tWHERE role = 'C')\n\t\t\t\tGROUP BY roster.fantasy_team_id\n\t\t\t) AS expense\n\t\t\tON team.id = expense.fantasy_team_id\n\t\t\tORDER BY tot_expense DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Max estimated offer for CENTROCAMPO",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "MZ6sP9kVz"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -256,7 +538,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 205
+                "value": 204
               }
             ]
           },
@@ -311,7 +593,7 @@
       "gridPos": {
         "h": 6,
         "w": 6,
-        "x": 6,
+        "x": 18,
         "y": 0
       },
       "id": 4,
@@ -366,6 +648,171 @@
       ],
       "title": "Budget expense (%)",
       "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "MZ6sP9kVz"
+      },
+      "description": "Budget 245",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "toBuy"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 43
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "tot_expense"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 40
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "bought"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 42
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 131
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "est_offer"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 84
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "max_offer"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 79
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 6,
+        "y": 8
+      },
+      "id": 8,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "est_offer"
+          }
+        ]
+      },
+      "pluginVersion": "9.0.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "MZ6sP9kVz"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT name,\n\t8 - COALESCE(num_players, 0) AS \"toBuy\",\n\tCOALESCE(expense.bought,0) AS \"bought\",\n\t80 - COALESCE(expense.tot,0) - (8 - COALESCE(num_players, 0)) + 1 AS est_offer,\n\tCOALESCE(500 - team_expense.tot - (25-team_expense.bought) + 1, 500-25+1) AS max_offer\n            FROM team\n            LEFT JOIN (\n                SELECT roster.fantasy_team_id AS id, COUNT(roster.fantasy_team_id) AS num_players\n                FROM roster\n                INNER JOIN player ON roster.player_id = player.id\n                WHERE player.role = 'D'\n                GROUP BY roster.fantasy_team_id) AS count\n\t\t\tON team.id = count.id\n\t\t\tLEFT JOIN (\n\t\t\t\tSELECT roster.fantasy_team_id, COALESCE(SUM(transfer.cost), 0) AS tot, COALESCE(COUNT(transfer.cost), 0) AS bought\n\t\t\t\tFROM roster\n\t\t\t\tINNER JOIN transfer ON roster.transfer_id = transfer.id\n\t\t\t\tWHERE roster.player_id IN (\n\t\t\t\t\tSELECT id FROM player\n\t\t\t\t\tWHERE role = 'D')\n\t\t\t\tGROUP BY roster.fantasy_team_id\n\t\t\t) AS expense\n\t\t\tON team.id = expense.fantasy_team_id\n\t\t\tLEFT JOIN (\n\t\t\t\tSELECT roster.fantasy_team_id, COALESCE(SUM(transfer.cost), 0) AS tot, COALESCE(COUNT(transfer.cost), 0) AS bought\n\t\t\t\tFROM roster\n\t\t\t\tINNER JOIN transfer ON roster.transfer_id = transfer.id\n\t\t\t\tGROUP BY roster.fantasy_team_id\n\t\t\t) AS team_expense\n\t\t\tON team.id = team_expense.fantasy_team_id\n\t\t\tORDER BY est_offer DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Max estimated offer for ATTACCO",
+      "type": "table"
     }
   ],
   "refresh": "5s",
@@ -383,6 +830,6 @@
   "timezone": "",
   "title": "Real Pollo",
   "uid": "fUg4J8ZVz",
-  "version": 13,
+  "version": 14,
   "weekStart": ""
 }
