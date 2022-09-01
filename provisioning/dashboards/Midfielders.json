@@ -111,7 +111,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  created AS \"time\",\n  cost\nFROM transfer, player\nWHERE\n  $__timeFilter(created)\nAND transfer.player_id = player.id\nAND player.role LIKE 'D'\nORDER BY 1",
+          "rawSql": "SELECT\n  created AS \"time\",\n  cost\nFROM transfer, player\nWHERE\n  $__timeFilter(created)\nAND transfer.player_id = player.id\nAND player.role LIKE 'C'\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -154,6 +154,8 @@
             "inspect": false
           },
           "mappings": [],
+          "max": 25,
+          "min": 0,
           "thresholds": {
             "mode": "percentage",
             "steps": [
@@ -222,7 +224,7 @@
           "hide": false,
           "metricColumn": "dest_fantasy_team_id",
           "rawQuery": true,
-          "rawSql": "SELECT\n  team.name AS \"Team\", SUM(transfer.cost)/500::float * 100 AS \"Budget (%)\", SUM(transfer.cost) AS expense\nFROM roster, transfer, team, player\nWHERE roster.transfer_id = transfer.id\nAND roster.fantasy_team_id = team.id\nAND roster.player_id = player.id\nAND player.role LIKE 'D'\nGROUP BY team.name",
+          "rawSql": "SELECT\n  team.name AS \"Team\", SUM(transfer.cost)/500::float * 100 AS \"Budget (%)\", SUM(transfer.cost) AS expense\nFROM roster, transfer, team, player\nWHERE roster.transfer_id = transfer.id\nAND roster.fantasy_team_id = team.id\nAND roster.player_id = player.id\nAND player.role LIKE 'C'\nGROUP BY team.name",
           "refId": "A",
           "select": [
             [
@@ -271,7 +273,7 @@
             "inspect": false
           },
           "mappings": [],
-          "max": 84,
+          "max": 100,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -388,7 +390,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  created,\n  player.name,\n  player.team,\n  cost,\n  player.fantasy_value\nFROM transfer, player\nWHERE\n  $__timeFilter(created)\nAND transfer.player_id = player.id\nAND player.role LIKE 'D'\nORDER BY cost",
+          "rawSql": "SELECT\n  created,\n  player.name,\n  player.team,\n  cost,\n  player.fantasy_value\nFROM transfer, player\nWHERE\n  $__timeFilter(created)\nAND transfer.player_id = player.id\nAND player.role LIKE 'C'\nORDER BY cost",
           "refId": "A",
           "select": [
             [
@@ -481,7 +483,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  player.name,\n  player.team,\n  player.fantasy_value\nFROM player\nLEFT OUTER JOIN transfer ON player.id = transfer.player_id\nWHERE player.role LIKE 'D'\nAND transfer.dest_fantasy_team_id IS NULL\nORDER BY player.value\n",
+          "rawSql": "SELECT\n  player.name,\n  player.team,\n  player.fantasy_value\nFROM player\nLEFT OUTER JOIN transfer ON player.id = transfer.player_id\nWHERE player.role LIKE 'C'\nAND transfer.dest_fantasy_team_id IS NULL\nORDER BY player.value\n",
           "refId": "A",
           "select": [
             [
@@ -533,8 +535,8 @@
     ]
   },
   "timezone": "utc",
-  "title": "Defenders",
-  "uid": "supVi2iVz",
-  "version": 1,
+  "title": "Midfielders",
+  "uid": "ygXfNRGVk",
+  "version": 6,
   "weekStart": "monday"
 }
