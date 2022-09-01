@@ -538,7 +538,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 204
+                "value": 137
               }
             ]
           },
@@ -584,7 +584,19 @@
               },
               {
                 "id": "custom.width",
-                "value": 90
+                "value": 71
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "sum"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 86
               }
             ]
           }
@@ -624,7 +636,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  player.role AS \"Role\", SUM(transfer.cost)/500::float * 100 AS \"Budget (%)\"\nFROM roster, transfer, team, player\nWHERE roster.transfer_id = transfer.id\nAND roster.fantasy_team_id = team.id\nAND roster.player_id = player.id\nAND team.name LIKE 'Real Pollo'\nGROUP BY player.role\n",
+          "rawSql": "SELECT\n  player.role AS \"Role\", SUM(transfer.cost)/500::float * 100 AS \"Budget (%)\", SUM(transfer.cost)\nFROM roster, transfer, team, player\nWHERE roster.transfer_id = transfer.id\nAND roster.fantasy_team_id = team.id\nAND roster.player_id = player.id\nAND team.name LIKE 'Real Pollo'\nGROUP BY player.role\n",
           "refId": "A",
           "select": [
             [
@@ -789,7 +801,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT name,\n\t8 - COALESCE(num_players, 0) AS \"toBuy\",\n\tCOALESCE(expense.bought,0) AS \"bought\",\n\t80 - COALESCE(expense.tot,0) - (8 - COALESCE(num_players, 0)) + 1 AS est_offer,\n\tCOALESCE(500 - team_expense.tot - (25-team_expense.bought) + 1, 500-25+1) AS max_offer\n            FROM team\n            LEFT JOIN (\n                SELECT roster.fantasy_team_id AS id, COUNT(roster.fantasy_team_id) AS num_players\n                FROM roster\n                INNER JOIN player ON roster.player_id = player.id\n                WHERE player.role = 'D'\n                GROUP BY roster.fantasy_team_id) AS count\n\t\t\tON team.id = count.id\n\t\t\tLEFT JOIN (\n\t\t\t\tSELECT roster.fantasy_team_id, COALESCE(SUM(transfer.cost), 0) AS tot, COALESCE(COUNT(transfer.cost), 0) AS bought\n\t\t\t\tFROM roster\n\t\t\t\tINNER JOIN transfer ON roster.transfer_id = transfer.id\n\t\t\t\tWHERE roster.player_id IN (\n\t\t\t\t\tSELECT id FROM player\n\t\t\t\t\tWHERE role = 'D')\n\t\t\t\tGROUP BY roster.fantasy_team_id\n\t\t\t) AS expense\n\t\t\tON team.id = expense.fantasy_team_id\n\t\t\tLEFT JOIN (\n\t\t\t\tSELECT roster.fantasy_team_id, COALESCE(SUM(transfer.cost), 0) AS tot, COALESCE(COUNT(transfer.cost), 0) AS bought\n\t\t\t\tFROM roster\n\t\t\t\tINNER JOIN transfer ON roster.transfer_id = transfer.id\n\t\t\t\tGROUP BY roster.fantasy_team_id\n\t\t\t) AS team_expense\n\t\t\tON team.id = team_expense.fantasy_team_id\n\t\t\tORDER BY est_offer DESC",
+          "rawSql": "SELECT name,\n\t6 - COALESCE(num_players, 0) AS \"toBuy\",\n\tCOALESCE(expense.bought,0) AS \"bought\",\n\t245 - COALESCE(expense.tot,0) - (6 - COALESCE(num_players, 0)) + 1 AS est_offer,\n\tCOALESCE(500 - team_expense.tot - (25-team_expense.bought) + 1, 500-25+1) AS max_offer\n            FROM team\n            LEFT JOIN (\n                SELECT roster.fantasy_team_id AS id, COUNT(roster.fantasy_team_id) AS num_players\n                FROM roster\n                INNER JOIN player ON roster.player_id = player.id\n                WHERE player.role = 'A'\n                GROUP BY roster.fantasy_team_id) AS count\n\t\t\tON team.id = count.id\n\t\t\tLEFT JOIN (\n\t\t\t\tSELECT roster.fantasy_team_id, COALESCE(SUM(transfer.cost), 0) AS tot, COALESCE(COUNT(transfer.cost), 0) AS bought\n\t\t\t\tFROM roster\n\t\t\t\tINNER JOIN transfer ON roster.transfer_id = transfer.id\n\t\t\t\tWHERE roster.player_id IN (\n\t\t\t\t\tSELECT id FROM player\n\t\t\t\t\tWHERE role = 'A')\n\t\t\t\tGROUP BY roster.fantasy_team_id\n\t\t\t) AS expense\n\t\t\tON team.id = expense.fantasy_team_id\n\t\t\tLEFT JOIN (\n\t\t\t\tSELECT roster.fantasy_team_id, COALESCE(SUM(transfer.cost), 0) AS tot, COALESCE(COUNT(transfer.cost), 0) AS bought\n\t\t\t\tFROM roster\n\t\t\t\tINNER JOIN transfer ON roster.transfer_id = transfer.id\n\t\t\t\tGROUP BY roster.fantasy_team_id\n\t\t\t) AS team_expense\n\t\t\tON team.id = team_expense.fantasy_team_id\n\t\t\tORDER BY est_offer DESC",
           "refId": "A",
           "select": [
             [
