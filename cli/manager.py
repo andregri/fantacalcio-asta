@@ -23,6 +23,7 @@ if __name__ == "__main__":
     # create the parser for the "delete" command
     parser_delete = subparsers.add_parser('delete', help='delete a player transfer from a roster')
     parser_delete.add_argument('player', type=str, help='player name')
+    parser_delete.add_argument('team', type=str, help='fantasy team name')
     parser_delete.set_defaults(func=commands.delete_transfer)
 
     # crete the parser for the "estimate" command

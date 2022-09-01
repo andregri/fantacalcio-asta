@@ -57,7 +57,7 @@ def add_player(player, team, cost, **kwargs):
     db_conn.close()
 
 
-def delete_transfer(player, **kwargs):
+def delete_transfer(player, team, **kwargs):
     db_conn = psycopg2.connect(
         user="admin", password="admin",
         host="127.0.0.1", port="5432",
@@ -73,28 +73,31 @@ def delete_transfer(player, **kwargs):
             logging.info(e)
             return
 
-        # find fantasy team
+        # find fantasy team id from its name
         cursor.execute(f"""
-            SELECT team.name FROM team
-            INNER JOIN roster
-            ON team.id = roster.fantasy_team_id
-            WHERE roster.player_id = {player_id}
-            LIMIT 1;
+            SELECT id, name FROM team
+            WHERE LOWER(name) LIKE '%' || '{team}' || '%';
         """)
-        row = cursor.fetchone()
-        fantasy_team = ''
+        team_rows = cursor.fetchall()
         
-        if row:
-            fantasy_team = row[0]
-            logging.info(f"Found team {str(fantasy_team)}")
-        else:
-            logging.info(f"('{player_name}') is free")
+        if len(team_rows) == 0:
+            logging.info(f"Unable to find a team from '{team}'")
             return
+        
+        elif len(team_rows) == 1:
+            logging.info(f"Found one team from '{team}': {str(team_rows[0])}")
+
+        elif len(team_rows) > 1:
+            logging.info(f"Found many teams from '{team}': {','.join(str(row) for row in team_rows)}")
+            return
+    
+    # create rows in transfer and roster tables if user confirms
+    fantasy_team_id, fantasy_team = team_rows[0]
 
     while True:
         confirm = input(f"Do you want to delete ('{player_name}') from ('{fantasy_team}')? (y/n)")
         if confirm == 'y':
-            utils.delete_transfer(db_conn, player_id)
+            utils.delete_transfer(db_conn, player_id, fantasy_team_id)
             logging.info(f"Deleted transfer: {(player_id, player_name)} - {fantasy_team}")
             break
 
