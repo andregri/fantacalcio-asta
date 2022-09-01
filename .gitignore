@@ -2,3 +2,4 @@
 *.sql
 *.xlsx
 __pycache__/
+postgres-data/
