@@ -1,5 +1,6 @@
 import datetime
 import logging
+from multiprocessing.sharedctypes import Value
 
 
 def add_player(db_conn, fantasy_team_id, player_id, cost):
@@ -51,4 +52,10 @@ def find_player_by_name(db_conn, player_name):
             return player_rows[0]
 
         elif len(player_rows) > 1:
-            raise ValueError(f"Found many players from '{player_name}': {','.join(str(row) for row in player_rows)}")
+            logging.info(f"Found many players from '{player_name}': {','.join(str(row) for row in player_rows)}")
+            chosen_id = int(input("Please type player id: "))
+            ids = [row[0] for row in player_rows]
+            if chosen_id in ids:
+                return player_rows[ids.index(chosen_id)]
+            else:
+                raise ValueError(f"{chosen_id} is not among {str(ids)}")
