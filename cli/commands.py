@@ -57,6 +57,53 @@ def add_player(player, team, cost, **kwargs):
     db_conn.close()
 
 
+def delete_transfer(player, **kwargs):
+    db_conn = psycopg2.connect(
+        user="admin", password="admin",
+        host="127.0.0.1", port="5432",
+        database="fantacalcio")
+    
+    with db_conn.cursor() as cursor:
+        # TODO: check that player is available
+
+        # find player id from his name
+        try:
+            player_id, player_name = utils.find_player_by_name(db_conn, player)
+        except Exception as e:
+            logging.info(e)
+            return
+
+        # find fantasy team
+        cursor.execute(f"""
+            SELECT team.name FROM team
+            INNER JOIN roster
+            ON team.id = roster.fantasy_team_id
+            WHERE roster.player_id = {player_id}
+            LIMIT 1;
+        """)
+        row = cursor.fetchone()
+        fantasy_team = ''
+        
+        if row:
+            fantasy_team = row[0]
+            logging.info(f"Found team {str(fantasy_team)}")
+        else:
+            logging.info(f"('{player_name}') is free")
+            return
+
+    while True:
+        confirm = input(f"Do you want to delete ('{player_name}') from ('{fantasy_team}')? (y/n)")
+        if confirm == 'y':
+            utils.delete_transfer(db_conn, player_id)
+            logging.info(f"Deleted transfer: {(player_id, player_name)} - {fantasy_team}")
+            break
+
+        elif confirm == 'n':
+            break
+
+    db_conn.close()
+
+
 def estimate_offer(player, **kwargs):
     db_conn = psycopg2.connect(
         user="admin", password="admin",

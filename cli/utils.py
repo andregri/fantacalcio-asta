@@ -20,6 +20,21 @@ def add_player(db_conn, fantasy_team_id, player_id, cost):
 
         db_conn.commit()
 
+
+def delete_transfer(db_conn, player_id):
+    # must delete from transfer and roster tables
+    with db_conn.cursor() as cursor:
+        cursor.execute(f"""
+            DELETE FROM roster WHERE player_id = {player_id};
+        """)
+
+        cursor.execute(f"""
+            DELETE FROM transfer WHERE player_id = {player_id};
+        """)
+
+        db_conn.commit()
+
+
 def find_player_by_name(db_conn, player_name):
     with db_conn.cursor() as cursor:
         cursor.execute(f"""
