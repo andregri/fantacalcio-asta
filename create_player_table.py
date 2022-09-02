@@ -4,13 +4,17 @@ def toStr(s):
     s = s.replace('\'', '')
     return f"'{s}'"
 
+def divideBy2(s):
+    num = int(s) / 2
+    return num
+
 attributes = {
     "id": {"col": 0, "conv": int},
     "role": {"col": 1, "conv": toStr},
     "name": {"col": 3, "conv": toStr},
     "team": {"col": 4, "conv": toStr},
     "value": {"col": 5, "conv": int},
-    "fantasy_value": {"col": 11, "conv": int}
+    "fantasy_value": {"col": 11, "conv": divideBy2}
 }
 
 create_table_sql = """
