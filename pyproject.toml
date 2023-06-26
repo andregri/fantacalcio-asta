@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "fantacalcio-asta"
+version = "0.1.0"
+description = "Manager of Fantacalcio auction"
+authors = ["andregri <andrea.grillo96@live.com>"]
+readme = "README.md"
+packages = [{include = "fantacalcio_asta"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+Django = "^4.2.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
