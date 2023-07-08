@@ -1,13 +1,20 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib import admin
 
-# Create your models here.
+class TeamAdmin(admin.ModelAdmin):
+    list_display = ["name", "credits"]
+
 class Team(models.Model):
     name = models.CharField(max_length=100)
     president = models.CharField(max_length=100)
+    credits = models.PositiveIntegerField()
 
     def __str__(self):
         return self.name
+
+class FootballerAdmin(admin.ModelAdmin):
+    list_display = ["name", "role", "team", "fantasy_value"]
 
 class Footballer(models.Model):
     GOALKEEPER = "P"
@@ -29,6 +36,9 @@ class Footballer(models.Model):
 
     def __str__(self):
         return f"[{self.role}] {self.name} ({self.team})"
+
+class TransferAdmin(admin.ModelAdmin):
+    list_display = ["footballer", "buyer", "cost"]
 
 class Transfer(models.Model):
     created_at = models.DateTimeField(default=timezone.now())
