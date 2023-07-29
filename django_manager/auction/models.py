@@ -3,11 +3,22 @@ from django.utils import timezone
 from django.contrib import admin
 
 class TeamAdmin(admin.ModelAdmin):
-    list_display = ["name"]
+    list_display = ["name", "get_credits"]
+
+    @admin.display(
+        description='available credits',
+    )
+    def get_credits(self, obj):
+        transfers = Transfer.objects.all() # todo: filter by buyer
+        sum = 0
+        for t in transfers:
+            sum += t.cost
+        return obj.credits - sum
 
 class Team(models.Model):
     name = models.CharField(max_length=100)
     president = models.CharField(max_length=100)
+    credits = models.PositiveIntegerField(default=500)
 
     def __str__(self):
         return self.name
