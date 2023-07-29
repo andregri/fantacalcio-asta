@@ -3,18 +3,18 @@ from django.utils import timezone
 from django.contrib import admin
 
 class TeamAdmin(admin.ModelAdmin):
-    list_display = ["name", "credits"]
+    list_display = ["name"]
 
 class Team(models.Model):
     name = models.CharField(max_length=100)
     president = models.CharField(max_length=100)
-    credits = models.PositiveIntegerField()
 
     def __str__(self):
         return self.name
 
 class FootballerAdmin(admin.ModelAdmin):
     list_display = ["name", "role", "team", "fantasy_value"]
+    search_fields = ["name", "team"]
 
 class Footballer(models.Model):
     GOALKEEPER = "P"
@@ -27,6 +27,7 @@ class Footballer(models.Model):
         (MIDFIELDER, "Centrocampista"),
         (FORWARD, "Attaccante")
     ]
+    external_id = models.CharField(max_length=200)
     name = models.CharField(max_length=200)
     role = models.CharField(max_length=1,
                             choices=ROLE_CHOICES)
@@ -35,10 +36,19 @@ class Footballer(models.Model):
     fantasy_value = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"[{self.role}] {self.name} ({self.team})"
+        return f"{self.name} ({self.team})"
 
 class TransferAdmin(admin.ModelAdmin):
-    list_display = ["footballer", "buyer", "cost"]
+    list_display = ["get_role", "footballer", "buyer", "cost"]
+    list_filter = ["buyer", "footballer__role"]
+    ordering = ['-created_at']
+    autocomplete_fields = ['footballer']
+
+    @admin.display(
+        description='role',
+    )
+    def get_role(self, obj):
+        return obj.footballer.role
 
 class Transfer(models.Model):
     created_at = models.DateTimeField(default=timezone.now())
