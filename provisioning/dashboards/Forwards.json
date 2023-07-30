@@ -111,7 +111,7 @@
             "group": [],
             "metricColumn": "none",
             "rawQuery": true,
-            "rawSql": "SELECT\n  created AS \"time\",\n  cost\nFROM transfer, player\nWHERE\n  $__timeFilter(created)\nAND transfer.player_id = player.id\nAND player.role LIKE 'A'\nORDER BY 1",
+            "rawSql": "SELECT\n  created_at AS \"time\",\n  cost\nFROM\n  auction_transfer,\n  auction_footballer\nWHERE\n  $__timeFilter(auction_transfer.created_at)\n  AND auction_transfer.footballer_id = auction_footballer.id\n  AND auction_footballer.role LIKE 'A'\nORDER BY\n  1",
             "refId": "A",
             "select": [
               [
@@ -224,7 +224,7 @@
             "hide": false,
             "metricColumn": "dest_fantasy_team_id",
             "rawQuery": true,
-            "rawSql": "SELECT\n  team.name AS \"Team\", SUM(transfer.cost)/500::float * 100 AS \"Budget (%)\", SUM(transfer.cost) AS expense\nFROM roster, transfer, team, player\nWHERE roster.transfer_id = transfer.id\nAND roster.fantasy_team_id = team.id\nAND roster.player_id = player.id\nAND player.role LIKE 'A'\nGROUP BY team.name",
+            "rawSql": "SELECT\n  auction_team.name AS \"Team\", SUM(auction_transfer.cost)/500::float * 100 AS \"Budget (%)\", SUM(auction_transfer.cost) AS expense\nFROM auction_transfer, auction_team, auction_footballer\nWHERE auction_transfer.buyer_id = auction_team.id\nAND auction_footballer.id = auction_transfer.footballer_id\nAND auction_footballer.role LIKE 'A'\nGROUP BY auction_team.name",
             "refId": "A",
             "select": [
               [
@@ -390,7 +390,7 @@
             "group": [],
             "metricColumn": "none",
             "rawQuery": true,
-            "rawSql": "SELECT\n  created,\n  player.name,\n  player.team,\n  cost,\n  player.fantasy_value\nFROM transfer, player\nWHERE\n  $__timeFilter(created)\nAND transfer.player_id = player.id\nAND player.role LIKE 'A'\nORDER BY cost",
+            "rawSql": "SELECT\n  auction_transfer.created_at,\n  auction_footballer.name,\n  auction_footballer.team,\n  auction_transfer.cost,\n  auction_footballer.fantasy_value\nFROM auction_transfer, auction_footballer\nWHERE\n  $__timeFilter(auction_transfer.created_at)\nAND auction_transfer.footballer_id = auction_footballer.id\nAND auction_footballer.role LIKE 'A'\nORDER BY cost",
             "refId": "A",
             "select": [
               [
@@ -483,7 +483,7 @@
             "group": [],
             "metricColumn": "none",
             "rawQuery": true,
-            "rawSql": "SELECT\n  player.name,\n  player.team,\n  player.fantasy_value\nFROM player\nLEFT OUTER JOIN transfer ON player.id = transfer.player_id\nWHERE player.role LIKE 'A'\nAND transfer.dest_fantasy_team_id IS NULL\nORDER BY player.value\n",
+            "rawSql": "SELECT\n  auction_footballer.name,\n  auction_footballer.team,\n  auction_footballer.fantasy_value\nFROM auction_footballer\nLEFT OUTER JOIN auction_transfer ON auction_footballer.id = auction_transfer.footballer_id\nWHERE auction_footballer.role LIKE 'A'\nAND auction_transfer.buyer_id IS NULL\nORDER BY auction_footballer.value\n",
             "refId": "A",
             "select": [
               [
